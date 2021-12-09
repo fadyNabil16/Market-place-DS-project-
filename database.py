@@ -1,4 +1,5 @@
 import sqlite3
+import os
 from sqlite3 import Error
 from sqlite3.dbapi2 import Row
 from hashlib import sha256
@@ -8,9 +9,9 @@ class Database:
     def __init__(self):
         try:
             self.connected_1 = sqlite3.connect(
-                r"C:\sqlite\\market1.db")
+                os.path.join(os.getcwd(), "market1.db"))
             self.connected_2 = sqlite3.connect(
-                r"C:\sqlite\\market2.db")
+                os.path.join(os.getcwd(), "market2.db"))
             self.cursorObj_1 = self.connected_1.cursor()
             self.cursorObj_2 = self.connected_2.cursor()
             self.createTables()
@@ -135,9 +136,10 @@ class Database:
             else:
                 self.connected_2.cursor().execute(sql_2, cash_tuple)
                 self.connected_2.commit()
+            return cash_tuple
         else:
             error = "add mount of money"
-            print(error)
+            return error
 
     # select from database any select
     def select_db(self, sql, select_tuple, db_code):
@@ -150,7 +152,7 @@ class Database:
         return rows
 
     def delete_form_db(self, item_tuple):
-        sql_item = '''DELETE FROM ITEM WHERE itemOwner = ? and name = ? and sold is False and rowid = ?'''
+        sql_item = '''DELETE FROM ITEM WHERE itemOwner = ? and rowid = ?'''
         if self.db_code == 1:
             self.connected_1.cursor().execute(sql_item, item_tuple)
             self.connected_1.commit()
@@ -159,7 +161,7 @@ class Database:
             self.connected_2.commit()
 
     def update_db(self, property, item_tuple):
-        sql_item = '''UPDATE ITEM SET {change} = ? WHERE itemOwner = ? and sold is False and name =? and rowid = ?'''
+        sql_item = '''UPDATE ITEM SET {change} = ? WHERE rowid = ?'''
         sql_item = sql_item.format(change=property)
         if self.db_code == 1:
             self.connected_1.cursor().execute(sql_item, item_tuple)

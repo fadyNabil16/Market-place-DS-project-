@@ -2,24 +2,25 @@ import uuid
 
 
 class User:
-    def __init__(self, DB, email, password, method):
+    def __init__(self, DB, email, password, method, *args):
         self.db = DB
         self.email = email
         self.password = password
         self.method = method  # login -> 0 or signup -> 1
+        if self.method == "0":
+            self.name = args[0]
+            self.location = args[1]
+            self.store_name = args[2]
 ############################## logging methods ############################
 
     def enter_app(self):
         my_user = ""
         if self.method == "0":
-            name = input("name  ")
-            location = input("Enter your location east or west  ")
-            store_name = input("enter store name  ")
-            if location == "e" or location == "east" or location == "1":
-                location = "east"
+            if self.location == "e" or self.location == "east" or self.location == "1":
+                self.location = "east"
             else:
-                location = "west"
-            my_user = self.signUp(name, store_name, location)
+                self.location = "west"
+            my_user = self.signUp(self.name, self.store_name, self.location)
             return my_user
         else:
             my_user = self.login()
@@ -45,7 +46,7 @@ class User:
             return user
 
     def add_cash(self, amount, userId):
-        self.db.add_cash_amuont(amount, userId)
+        return self.db.add_cash_amuont(amount, userId)
 #################################end logging methods ######################
 
 ################################manipulate item#########################
@@ -64,10 +65,10 @@ class User:
                           args[4], args[5],)
             self.db.insert_to_database("item", item_tuple)
         elif method == "delete":
-            item_tuple = (args[0], args[1], args[2],)
+            item_tuple = (args[0], args[1],)
             self.db.delete_form_db(item_tuple)
         elif method == "edit":
-            item_tuple = (args[1], args[2], args[3], args[4],)
+            item_tuple = (args[1], args[2],)
             self.db.update_db(args[0], item_tuple)
 
     def search(self, userId, name):
@@ -105,7 +106,7 @@ class User:
                 sql_1 = '''UPDATE USER SET cash = ? WHERE id = ?'''
                 sql_perment = '''SELECT * FROM USER WHERE id = ?'''
                 _perment = (_rows[0][7],)
-                __perment = self.db.select_db(sql_perment, _perment)
+                __perment = self.db.select_db(sql_perment, _perment, self.db.db_code)
                 owner_cash = __perment[0][6]
                 if owner_cash is None:
                     owner_cash = quantity * price
@@ -133,4 +134,23 @@ class User:
         else:
             print("add cash first")
 
+    def user_items(self, userid):
+        sql = '''SELECT rowid,* FROM ITEM WHERE (itemOwner = ? OR want_to_sell= ?) AND quantity > 0;'''
+        tup = (userid, userid,)
+        return self.db.select_db(sql, tup, self.db.db_code)
+    
+    def store_nam(self, userid):
+        sql = '''SELECT store FROM USER WHERE id = ?;'''
+        tup = (userid,)
+        res = self.db.select_db(sql, tup, self.db.db_code)
+        print(res)
+        return res
+
+    def history(self, userid):
+        sql = '''SELECT * FROM HISTORY WHERE owner = ?;'''
+        tup= (userid,)
+        sell = self.db.select_db(sql, tup, self.db.db_code)
+        sql = '''SELECT * FROM HISTORY WHERE buyer = ?;'''
+        buy = self.db.select_db(sql, tup, self.db.db_code)
+        return buy, sell
     #################################end store method###################################
