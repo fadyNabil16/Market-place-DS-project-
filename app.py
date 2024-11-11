@@ -13,10 +13,10 @@ class WelcomeScreen(QDialog):
         super(WelcomeScreen, self).__init__()
         loadUi("./ui/login.ui", self)
         password(self.password)
-        self.login.clicked.connect(self.gotoprofile)
+        self.login.clicked.connect(self.go_to_profile)
         self.signup.clicked.connect(self.gotosignup)
 
-    def gotoprofile(self):
+    def go_to_profile(self):
         if len(self.email.text()) > 0 and len(self.password.text()) > 0:
             global user, loged_in
             user = User(my_db, self.email.text(), self.password.text(), "1")
@@ -39,9 +39,9 @@ class Signup(QDialog):
         super(Signup, self).__init__()
         loadUi("./ui/signup.ui", self)
         password(self.password)
-        self.signup.clicked.connect(self.gotoprofile)
+        self.signup.clicked.connect(self.go_to_profile)
 
-    def gotoprofile(self):
+    def go_to_profile(self):
         email = self.email.text().lower()
         name = self.name.text()
         password = self.password.text().lower()
@@ -60,46 +60,49 @@ class Signup(QDialog):
 
 
 class Operation(QDialog):
-    def __init__(self):
+    def __init__(self)-> None:
         global Self
         Self = self
         super(Operation, self).__init__()
         loadUi("./ui/operation.ui", self)
         self.vertical = QVBoxLayout()
+        
+        #Profile Instance Creation 
         self.pro = Profile()
         self.vertical.addWidget(self.pro)
         self.change.setLayout(self.vertical)
-        self.user.clicked.connect(self.gotoprofile)
-        self.search.clicked.connect(self.gotosearch)
-        self.history.clicked.connect(self.gotohistory)
-        self.plus.clicked.connect(self.gotoproadd)
+        self.user.clicked.connect(self.go_to_profile)
+        self.search.clicked.connect(self.go_to_search)
+        self.history.clicked.connect(self.go_to_history)
+        self.plus.clicked.connect(self.go_to_pro_add)
 
-    def gotoprofile(self):
+    def go_to_profile(self)-> None:
         self.vertical.itemAt(0).widget().deleteLater()
         self.pro = Profile()
         Self = self
         self.vertical.addWidget(self.pro)
         self.change.setLayout(self.vertical)
 
-    def gotosearch(self):
+    def go_to_search(self)-> None:
         self.vertical.itemAt(0).widget().deleteLater()
         self.search = Search()
         self.vertical.addWidget(self.search)
         self.change.setLayout(self.vertical)
 
-    def gotohistory(self):
+    def go_to_history(self)-> None:
         self.vertical.itemAt(0).widget().deleteLater()
         self.histor = History()
         self.vertical.addWidget(self.histor)
         self.change.setLayout(self.vertical)
-    def gotoproadd(self):
+
+    def go_to_pro_add(self) -> None:
         self.vertical.itemAt(0).widget().deleteLater()
         self.add = Add()
         self.vertical.addWidget(self.add)
         self.change.setLayout(self.vertical)
         self.add.adding.clicked.connect(self.add_in_store)
 
-    def add_in_store(self):
+    def add_in_store(self) -> None:
         name = self.add.name.text().lower()
         url = self.add.url.text()
         brand = self.add.brand.text()
@@ -114,12 +117,12 @@ class Operation(QDialog):
 
 #user ptofile calss add to it items class to push in scroll area
 class Profile(QDialog):
-    def __init__(self):
+    def __init__(self) -> None:
         super(Profile, self).__init__()
         loadUi("./ui/profile.ui", self)
         self.first_screen()
 
-    def first_screen(self):
+    def first_screen(self) -> None:
         global tot_cash
         total = user.add_cash(0, loged_in[0][0])
         tot_cash = total[0]
@@ -162,11 +165,11 @@ class Item(QDialog):
             else:
                 self.lis = self.entry.text()
             user.item_in_store("edit", self.list.currentText(), self.lis,self.rowid)
-            Self.gotoprofile()
+            Self.go_to_profile()
 
     def delete(self):
         user.item_in_store("delete", loged_in[0][0], self.rowid)
-        Self.gotoprofile()
+        Self.go_to_profile()
 
 class Search(QDialog):
     def __init__(self):

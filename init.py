@@ -3,11 +3,7 @@ from database import Database
 from user import User
 import sys
 from PyQt5.QtWidgets import *
-#from app import ItemWidget
 from welcome import WelcomeScreen
-# add item to store
-# edit or remove from store
-# sell by another one
 
 
 # if __name__ == "__main__":
