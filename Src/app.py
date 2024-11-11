@@ -9,9 +9,10 @@ from utils import *
 
 
 class WelcomeScreen(QDialog):
+
     def __init__(self):
         super(WelcomeScreen, self).__init__()
-        loadUi("./ui/login.ui", self)
+        loadUi("../ui/login.ui", self)
         password(self.password)
         self.login.clicked.connect(self.go_to_profile)
         self.signup.clicked.connect(self.gotosignup)
@@ -37,7 +38,7 @@ class WelcomeScreen(QDialog):
 class Signup(QDialog):
     def __init__(self):
         super(Signup, self).__init__()
-        loadUi("./ui/signup.ui", self)
+        loadUi("../ui/signup.ui", self)
         password(self.password)
         self.signup.clicked.connect(self.go_to_profile)
 
@@ -64,7 +65,7 @@ class Operation(QDialog):
         global Self
         Self = self
         super(Operation, self).__init__()
-        loadUi("./ui/operation.ui", self)
+        loadUi("../ui/operation.ui", self)
         self.vertical = QVBoxLayout()
         
         #Profile Instance Creation 
@@ -119,7 +120,7 @@ class Operation(QDialog):
 class Profile(QDialog):
     def __init__(self) -> None:
         super(Profile, self).__init__()
-        loadUi("./ui/profile.ui", self)
+        loadUi("../ui/profile.ui", self)
         self.first_screen()
 
     def first_screen(self) -> None:
@@ -153,7 +154,7 @@ class Profile(QDialog):
 class Item(QDialog):
     def __init__(self, rowid):
         super(Item, self).__init__()
-        loadUi("./ui/item.ui", self)
+        loadUi("../ui/item.ui", self)
         self.rowid = rowid
         self.edit.clicked.connect(self.editing)
         self.delet.clicked.connect(self.delete)
@@ -174,7 +175,7 @@ class Item(QDialog):
 class Search(QDialog):
     def __init__(self):
         super(Search, self).__init__()
-        loadUi("./ui/search.ui", self)
+        loadUi("../ui/search.ui", self)
         self.search_btn.clicked.connect(self.find)
 
     
@@ -199,7 +200,7 @@ class Search(QDialog):
 class BuyItem(QDialog):
     def __init__(self, owner, rowid, qun):
         super(BuyItem, self).__init__()
-        loadUi("./ui/item_buy.ui", self)
+        loadUi("../ui/item_buy.ui", self)
         self.buy.clicked.connect(self.buy_item)
         self.sell.clicked.connect(self.sell_item)
         self.owner = owner
@@ -232,7 +233,7 @@ class BuyItem(QDialog):
 class History(QDialog):
     def __init__(self):
         super(History, self).__init__()
-        loadUi("./ui/his_scroll.ui", self)
+        loadUi("../ui/his_scroll.ui", self)
         self.wid = QWidget()
         self.vertical = QVBoxLayout()
         self.first_screen()
@@ -252,7 +253,7 @@ class History(QDialog):
 class ItemHistory(QDialog):
     def __init__(self, *args):
         super(ItemHistory, self).__init__()
-        loadUi("./ui/history.ui", self)
+        loadUi("../ui/history.ui", self)
         if args[0] == "buy":
             self.operation.setText("Buy")
         else:
@@ -265,7 +266,7 @@ class ItemHistory(QDialog):
 class Add(QDialog):
     def __init__(self):
         super(Add, self).__init__()
-        loadUi("./ui/add.ui", self)
+        loadUi("../ui/add.ui", self)
 
 
 app = QApplication(sys.argv)

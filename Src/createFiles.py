@@ -14,6 +14,6 @@ class CreateFile:
 
         if not os.path.exists("market2.db"):
             try:
-                f = open("market2.db", "rx")
-            except os.error:
-                pass
+                f = open("market2.db", "x")
+            except os.error as err:
+                print(err)

@@ -1,2 +1,7 @@
 /__pycache__/
-./sqlite*
+/sqlite-tools-win32-x86-33600000
+/Src/sqlite.exe
+/Src/__pycache__
+/Src/build/
+/dist/*
+/spec/*
